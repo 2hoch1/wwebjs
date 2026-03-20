@@ -1,0 +1,15 @@
+{
+  "title": "Guide",
+  "description": "The description of root folder (optional)",
+  "pages": [
+    "faq",
+    "---Introduction---",
+    "index",
+    "what-is-wwebjs",
+    "disclaimer",
+    "---Setup---",
+    "requirements",
+    "getting-started"
+  ],
+  "root": true
+}

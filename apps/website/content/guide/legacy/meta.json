@@ -1,0 +1,16 @@
+{
+  "title": "Legacy Guide",
+  "description": "The description of root folder (optional)",
+  "root": true,
+  "pages": [
+    "---Getting Started---",
+    "index",
+    "what-is-new",
+    "installation",
+    "---Creating your bot---",
+    "creating-your-bot/index",
+    "creating-your-bot/authentication",
+    "creating-your-bot/handling-attachments",
+    "creating-your-bot/mentions"
+  ]
+}
