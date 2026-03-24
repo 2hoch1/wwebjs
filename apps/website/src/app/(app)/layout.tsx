@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { SiteHeader } from '@/components/nav/site-header'
+import { SiteHeader } from '@/layouts/nav'
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (

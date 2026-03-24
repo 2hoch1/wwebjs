@@ -1,0 +1,24 @@
+---
+title: Formatters
+description: A collection of message formatters for whatsapp-web.js to help you structure and style your app responses.
+---
+
+## Overview
+
+The `@wwebjs/formatter` package provides a set of utilities to format messages sent through WWebJS. It simplifies building structured text responses with WhatsApp's supported formatting syntax.
+
+## Installation
+
+```bash
+npm install @wwebjs/formatter
+```
+
+## Quick Start
+
+```javascript
+const { bold, italic, code } = require('@wwebjs/formatter')
+
+client.on('message', async msg => {
+  await msg.reply(bold('Hello!') + ' Welcome to the bot.')
+})
+```

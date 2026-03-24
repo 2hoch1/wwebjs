@@ -1,0 +1,81 @@
+---
+title: Channels
+description: Work with WhatsApp Channels using a clear publishing and subscription workflow.
+---
+
+WhatsApp Channels are one-way broadcast feeds. Admins post updates and followers receive them without being able to reply.
+
+## Get All Channels
+
+```javascript
+const channels = await client.getChannels()
+channels.forEach(ch => console.log(ch.name, ch.id._serialized))
+```
+
+## Create a Channel
+
+```javascript
+const channel = await client.createChannel('My app Updates')
+console.log('Channel created:', channel.id._serialized)
+```
+
+## Create a Channel with a Description
+
+```javascript
+const channel = await client.createChannel('My app Updates', {
+  description: 'Official updates from my app.',
+})
+```
+
+## Get a Channel by ID
+
+```javascript
+const channel = await client.getChatById('channel-id@newsletter')
+```
+
+## Subscribe to a Channel
+
+Follow a channel so the app receives its posts:
+
+```javascript
+await client.subscribeToChannel('channel-id@newsletter')
+```
+
+## Unsubscribe from a Channel
+
+```javascript
+await client.unsubscribeFromChannel('channel-id@newsletter')
+```
+
+## Send a Message to a Channel
+
+Once you have the channel chat object, send to it like any other chat:
+
+```javascript
+const channel = await client.getChatById('channel-id@newsletter')
+await channel.sendMessage('Hello, followers!')
+```
+
+## Channel publishing workflow
+
+Use a simple publishing pipeline for reliability:
+
+1. validate target channel ID,
+2. build content payload,
+3. publish,
+4. log success or failure with channel context.
+
+```javascript
+async function publishUpdate(client, channelId, text) {
+  const channel = await client.getChatById(channelId)
+  await channel.sendMessage(text)
+  console.log('Published update to', channelId)
+}
+```
+
+## Delete a Channel
+
+```javascript
+const channel = await client.getChatById('channel-id@newsletter')
+await client.deleteChannel(channel.id._serialized)
+```

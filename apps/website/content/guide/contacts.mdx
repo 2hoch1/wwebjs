@@ -1,0 +1,117 @@
+---
+title: Contacts
+description: Query contact entities safely, enrich profile context, and validate recipients before messaging.
+---
+
+## Contact data model
+
+A contact object provides identity and profile fields used for routing, moderation, and personalization.
+
+## Fetch All Contacts
+
+```javascript
+const contacts = await client.getContacts()
+console.log(`${contacts.length} contacts found`)
+```
+
+## Get a Contact by ID
+
+```javascript
+const contact = await client.getContactById('15551234567@c.us')
+console.log(contact.name || contact.pushname || contact.number)
+```
+
+## Contact Properties
+
+| Property              | Description                                    |
+| --------------------- | ---------------------------------------------- |
+| `contact.id`          | Unique contact identifier                      |
+| `contact.number`      | Phone number without formatting                |
+| `contact.name`        | Name saved in the app's address book           |
+| `contact.pushname`    | Name the contact set on their own account      |
+| `contact.isMe`        | `true` if this is the app's own contact        |
+| `contact.isUser`      | `true` for individual (non-group) contacts     |
+| `contact.isGroup`     | `true` for group contacts                      |
+| `contact.isBusiness`  | `true` for WhatsApp Business accounts          |
+| `contact.isBlocked`   | `true` if the contact is blocked               |
+| `contact.isWAContact` | `true` if the number is registered on WhatsApp |
+
+## Get Profile Picture
+
+```javascript
+const contact = await client.getContactById('15551234567@c.us')
+const url = await contact.getProfilePicUrl()
+
+if (url) {
+  console.log('Profile picture:', url)
+} else {
+  console.log('No profile picture available')
+}
+```
+
+## Get Status / About
+
+```javascript
+const about = await contact.getAbout()
+console.log('Status:', about)
+```
+
+## Open the Chat with a Contact
+
+```javascript
+const contact = await client.getContactById('15551234567@c.us')
+const chat = await contact.getChat()
+await chat.sendMessage('Hello!')
+```
+
+## Check if a Number is Registered
+
+Before sending a message, verify the number exists on WhatsApp:
+
+## Validation pattern for outbound messaging
+
+```javascript
+async function safeSend(client, id, text) {
+  const registered = await client.isRegisteredUser(id)
+  if (!registered) return false
+
+  await client.sendMessage(id, text)
+  return true
+}
+```
+
+## Operational recommendations
+
+1. Validate recipient IDs before sending high volume messages.
+2. Do not rely only on `name`, use stable IDs for logic.
+3. Treat profile fields as mutable user data.
+
+```javascript
+const isRegistered = await client.isRegisteredUser('15551234567@c.us')
+
+if (isRegistered) {
+  await client.sendMessage('15551234567@c.us', 'Hi there!')
+} else {
+  console.log('This number is not on WhatsApp')
+}
+```
+
+## Block a Contact
+
+```javascript
+const contact = await client.getContactById('15551234567@c.us')
+await contact.block()
+```
+
+## Unblock a Contact
+
+```javascript
+await contact.unblock()
+```
+
+## Get All Blocked Contacts
+
+```javascript
+const blocked = await client.getBlockedContacts()
+blocked.forEach(c => console.log('Blocked:', c.number))
+```

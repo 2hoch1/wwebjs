@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
-import type { ReactNode } from 'react'
+import { createContext, useContext, useState } from 'react'
+import type { HTMLAttributes, ReactNode } from 'react'
 
 interface CollapsibleProps {
   children: ReactNode
@@ -18,13 +18,13 @@ interface CollapsibleContentProps {
   children: ReactNode
 }
 
-const CollapsibleContext = React.createContext<{
+const CollapsibleContext = createContext<{
   open: boolean
   setOpen: (open: boolean) => void
 } | null>(null)
 
 function useCollapsible() {
-  const context = React.useContext(CollapsibleContext)
+  const context = useContext(CollapsibleContext)
   if (!context) {
     throw new Error('Collapsible components must be used within a Collapsible')
   }
@@ -36,7 +36,7 @@ export function Collapsible({
   className,
   defaultOpen = false,
   ...props
-}: CollapsibleProps & React.HTMLAttributes<HTMLDivElement>) {
+}: CollapsibleProps & HTMLAttributes<HTMLDivElement>) {
   const [open, setOpen] = useState(defaultOpen)
 
   const classNameValue =
@@ -55,7 +55,7 @@ export function CollapsibleTrigger({
   children,
   className,
   ...props
-}: CollapsibleTriggerProps & React.HTMLAttributes<HTMLButtonElement>) {
+}: CollapsibleTriggerProps & HTMLAttributes<HTMLButtonElement>) {
   const { open, setOpen } = useCollapsible()
 
   return (

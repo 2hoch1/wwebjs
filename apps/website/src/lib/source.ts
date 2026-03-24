@@ -1,4 +1,4 @@
-import { docs } from 'fumadocs-mdx:collections/server'
+import { docs, formatterDocs, legacyDocs } from 'fumadocs-mdx:collections/server'
 import { type InferPageType, loader } from 'fumadocs-core/source'
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons'
 
@@ -9,7 +9,21 @@ export const source = loader({
   plugins: [lucideIconsPlugin()],
 })
 
-export function getPageImage(page: InferPageType<typeof source>) {
+export const formatterSource = loader({
+  baseUrl: '/guide/formatters',
+  source: formatterDocs.toFumadocsSource(),
+  plugins: [lucideIconsPlugin()],
+})
+
+export const legacySource = loader({
+  baseUrl: '/guide/legacy',
+  source: legacyDocs.toFumadocsSource(),
+  plugins: [lucideIconsPlugin()],
+})
+
+export function getPageImage(
+  page: InferPageType<typeof source> | InferPageType<typeof legacySource>
+) {
   const segments = [...page.slugs, 'image.png']
 
   return {

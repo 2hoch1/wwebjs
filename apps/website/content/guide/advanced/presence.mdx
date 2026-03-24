@@ -1,0 +1,65 @@
+---
+title: Presence and Profile
+description: Manage status, display identity, and availability signals with predictable lifecycle handling.
+---
+
+## Set the Status Message
+
+Update the "About" text shown on the app's profile:
+
+```javascript
+await client.setStatus('Powered by whatsapp-web.js 🤖')
+```
+
+## Set the Display Name
+
+Change the name shown to other users:
+
+```javascript
+await client.setDisplayName('My Awesome app')
+```
+
+> Display name changes may not be available on all WhatsApp account types.
+
+## Send Presence Available
+
+Announce that the account is online. Useful after connecting to let contacts see the app as active:
+
+```javascript
+client.on('ready', async () => {
+  await client.sendPresenceAvailable()
+})
+```
+
+## Send Presence Unavailable
+
+Mark the account as offline:
+
+```javascript
+await client.sendPresenceUnavailable()
+```
+
+## Get the app's Profile Picture URL
+
+```javascript
+const me = await client.getContactById(client.info.wid._serialized)
+const url = await me.getProfilePicUrl()
+console.log('Profile picture:', url)
+```
+
+## Get the app's Own Info
+
+`client.info` is available after the `ready` event:
+
+```javascript
+client.on('ready', () => {
+  console.log('Logged in as:', client.info.pushname)
+  console.log('Number:', client.info.wid.user)
+})
+```
+
+## Operational notes
+
+1. Presence signals can be delayed or affected by connectivity.
+2. Profile updates should not be tied to high frequency message handlers.
+3. Keep profile changes explicit and auditable.

@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/chart'
 import { cn } from '@/lib/utils'
 
-const CHART_GREEN = '#4ACC65'
+const CHART_COLOR = 'var(--foreground)'
 
 const chartData = [
   { date: '2023-01-01', downloads: 58320 },
@@ -56,7 +56,7 @@ const chartData = [
 const chartConfig = {
   downloads: {
     label: 'Downloads',
-    color: CHART_GREEN,
+    color: CHART_COLOR,
   },
 } satisfies ChartConfig
 
@@ -130,8 +130,8 @@ export function NpmDownloadsChart() {
             <AreaChart data={filtered} margin={{ top: 8, left: 0, right: 8, bottom: 0 }}>
               <defs>
                 <linearGradient id="fillDownloads" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={CHART_GREEN} stopOpacity={0.3} />
-                  <stop offset="95%" stopColor={CHART_GREEN} stopOpacity={0.02} />
+                  <stop offset="5%" stopColor={CHART_COLOR} stopOpacity={0.15} />
+                  <stop offset="95%" stopColor={CHART_COLOR} stopOpacity={0.01} />
                 </linearGradient>
               </defs>
               <CartesianGrid vertical={false} stroke="var(--border)" />
@@ -174,7 +174,7 @@ export function NpmDownloadsChart() {
                 dataKey="downloads"
                 type="natural"
                 fill="url(#fillDownloads)"
-                stroke={CHART_GREEN}
+                stroke={CHART_COLOR}
                 strokeWidth={2}
               />
             </AreaChart>

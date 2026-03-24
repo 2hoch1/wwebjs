@@ -1,59 +1,55 @@
 ---
 title: Requirements
-description: Prerequisites for getting started with WWebJS
-icon: ClipboardList
+description: Check the basic skills and runtime needs before starting with whatsapp-web.js.
 ---
 
-Before you start building with WWebJS, ensure you have the necessary knowledge and tools set up on your system.
+<Callout title="Tip" type="info">
+  If you can build a small Node.js script with async handlers, you are ready to continue.
+</Callout>
 
-## JavaScript Knowledge
+## 1. Knowledge prerequisites
 
-Getting into bot development with WWebJS is exciting, but a solid understanding of JavaScript is crucial. While it's possible to start with limited knowledge, attempting to create a bot without good JavaScript fundamentals may result in:
+You should be comfortable with:
 
-- Difficulty solving basic problems
-- Frustration with debugging
-- Challenges implementing features
-- Discouragement when things don't work as expected
+1. Core JavaScript.
+2. Async flow with promises and `async` `await`.
+3. Node.js module and process basics.
+4. Event driven architecture using EventEmitter.
 
-If you're a complete beginner, take time to learn the basics and return with better understanding.
+Without this baseline, debugging and architecture choices become unnecessarily painful.
 
-## Recommended Learning Resources
+<Callout title="Warning" type="warning">
+  Starting without async and event basics usually leads to unstable message handling.
+</Callout>
 
-Before diving into WWebJS, consider exploring:
+## 2. Runtime prerequisites
 
-- [JavaScript Basics - Udacity](https://www.udacity.com/course/javascript-basics--ud804)
-- [Modern JavaScript - javascript.info](https://javascript.info/)
-- [Interactive JavaScript - Codecademy](https://www.codecademy.com/learn/introduction-to-javascript)
-- [NodeSchool](https://nodeschool.io/) - Learn JavaScript and Node.js interactively
-- [W3Schools Node.js Tutorials](https://www.w3schools.com/nodejs/default.asp)
-- [Official Node.js Documentation](https://nodejs.org/en/docs/)
+Recommended minimum:
 
-## System Requirements
+1. Node.js `18` or higher.
+2. A package manager like `npm`, `pnpm`, or `yarn`.
+3. A stable OS runtime, Windows, macOS, or Linux.
+4. An active WhatsApp account with linked device access.
 
-To run WWebJS, you need:
+Quick terminal check:
 
-- **Node.js** version 16.0 or higher
-- **npm** or **yarn** package manager
-- **At least 512MB RAM** available for the browser process
-- **Supported Operating System**: Windows, macOS, or Linux
-- **Active WhatsApp account** with access to WhatsApp Web
-- **Desktop or browser access** to WhatsApp Web for authentication
+```bash
+node --version
+npm --version
+```
 
-## Development Tools
+## Learning resources
 
-While optional, these tools will improve your development experience:
+1. [JavaScript.info](https://javascript.info/)
+2. [Node.js Documentation](https://nodejs.org/en/docs/)
+3. [NodeSchool](https://nodeschool.io/)
+4. [EventEmitter API](https://nodejs.org/api/events.html)
 
-- A code editor (VS Code, Sublime Text, WebStorm)
-- Git for version control
-- A terminal/command prompt
-- Docker (for containerized deployments)
+## Readiness checklist before installation
 
-## Getting Help
+You are ready for the next chapter when:
 
-If you have trouble or get stuck:
-
-- Join the [Discord community](https://discord.gg/wyKybbF) for help
-- Search existing [GitHub issues](https://github.com/pedroslopez/whatsapp-web.js)
-- Check the [FAQ](../troubleshooting/faq) for common questions
-
-Ready? Let's move to [Installation](./installation)
+1. Your Node version is current.
+2. You understand async and event handling basics.
+3. You have a clean project directory.
+4. You know your target runtime model, local or distributed.

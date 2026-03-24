@@ -1,235 +1,124 @@
 ---
 title: Linters and Code Quality
-description: Set up ESLint and Prettier for code quality
+description: Set up code quality checks so event driven logic remains reliable and maintainable.
 ---
 
-Linters and formatters help maintain code quality and consistency in your project.
+In app projects, linting and formatting are reliability tools, not style accessories.
 
-## ESLint - Code Quality
+## Goal
 
-ESLint helps find and fix problems in your JavaScript code.
+You want to achieve three outcomes:
 
-### Installation
+1. Catch errors early.
+2. Keep team conventions consistent.
+3. Reserve reviews for architecture and behavior.
+
+## 1. Install tools
 
 ```bash
-npm install --save-dev eslint
-npx eslint --init
+npm install --save-dev eslint prettier eslint-config-prettier
 ```
 
-Follow the interactive setup to configure ESLint for your project.
+## 2. Configure ESLint
 
-### Basic Configuration
+Create `eslint.config.js`:
 
-Create `.eslintrc.json`:
+```javascript
+const js = require('@eslint/js')
 
-```json
-{
-  "env": {
-    "node": true,
-    "es2021": true
+module.exports = [
+  js.configs.recommended,
+  {
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'commonjs',
+    },
+    rules: {
+      'no-unused-vars': 'warn',
+      'no-console': 'off',
+      eqeqeq: ['error', 'always'],
+    },
   },
-  "extends": "eslint:recommended",
-  "parserOptions": {
-    "ecmaVersion": "latest"
-  },
-  "rules": {
-    "no-console": "warn",
-    "no-unused-vars": "warn",
-    "semi": ["error", "always"],
-    "quotes": ["error", "single"]
-  }
-}
+]
 ```
 
-### Usage
+Why `eqeqeq` matters: implicit coercion often causes event flow bugs.
 
-Check your code:
-
-```bash
-npx eslint src/
-```
-
-Fix automatically:
-
-```bash
-npx eslint src/ --fix
-```
-
-### Common Rules
-
-- `no-console`: Warn about console.log statements
-- `no-unused-vars`: Warn about unused variables
-- `semi`: Require semicolons
-- `quotes`: Enforce single or double quotes
-- `indent`: Enforce indentation style
-
-## Prettier - Code Formatting
-
-Prettier automatically formats your code for consistency.
-
-### Installation
-
-```bash
-npm install --save-dev prettier
-```
-
-### Basic Configuration
+## 3. Add Prettier
 
 Create `.prettierrc.json`:
 
 ```json
 {
-  "semi": true,
   "singleQuote": true,
-  "trailingComma": "es5",
-  "tabWidth": 2,
-  "useTabs": false,
-  "printWidth": 80
+  "semi": false,
+  "trailingComma": "all",
+  "printWidth": 100
 }
 ```
 
-### Usage
-
-Format a file:
-
-```bash
-npx prettier --write src/index.js
-```
-
-Format all files:
-
-```bash
-npx prettier --write src/
-```
-
-Check formatting:
-
-```bash
-npx prettier --check src/
-```
-
-## Setup Scripts in package.json
-
-Add convenient scripts to your `package.json`:
+## 4. Add scripts in package.json
 
 ```json
 {
   "scripts": {
-    "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix",
-    "format": "prettier --write src/",
-    "format:check": "prettier --check src/"
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src"
   }
 }
 ```
 
-Now you can run:
+## 5. Daily workflow
 
-```bash
-npm run lint          # Check for issues
-npm run lint:fix      # Fix issues
-npm run format        # Format code
-npm run format:check  # Check formatting
-```
+Use this sequence consistently:
 
-## Configure Git Hooks with Husky
+1. run `npm run lint` before commit.
+2. run `npm run format` for file consistency.
+3. run `npm run lint` again before push.
 
-Automatically run linters before committing:
+This lowers integration noise across branches.
 
-```bash
-npm install --save-dev husky
-npx husky install
-npx husky add .husky/pre-commit "npm run lint:fix && npm run format"
-```
+## 6. Rule focus for app projects
 
-Now ESLint and Prettier run automatically before each commit.
+Extend rules intentionally:
 
-## Popular ESLint Plugins
+1. warnings for unused values,
+2. strict equality checks,
+3. no silent promise failures,
+4. no uncontrolled global state.
 
-Install additional plugins for more checks:
+Add plugins gradually as your codebase grows.
 
-### For Node.js
+## 7. Editor integration
 
-```bash
-npm install --save-dev eslint-plugin-node
-```
-
-Update `.eslintrc.json`:
-
-```json
-{
-  "extends": ["eslint:recommended", "plugin:node/recommended"]
-}
-```
-
-### For Security
-
-```bash
-npm install --save-dev eslint-plugin-security
-```
-
-## VS Code Integration
-
-Install the ESLint and Prettier extensions in VS Code:
-
-- ESLint extension by Dirk Baeumer
-- Prettier - Code formatter by Prettier
-
-Add to your `.vscode/settings.json`:
+For VS Code, these settings are useful:
 
 ```json
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
   }
 }
 ```
 
-Now code auto-formats on save.
+## 8. Add a pre commit guard
 
-## Best Practices
-
-1. **Start simple**: Use recommended configurations first
-2. **Be consistent**: Apply same rules to all files
-3. **Team agreement**: Discuss rules with team members
-4. **Document**: Document any custom rules
-5. **Gradual fixes**: Don't fix all issues at once on large projects
-6. **Pre-commit**: Use hooks to prevent bad commits
-
-## Troubleshooting
-
-### ESLint Not Finding Files
+Optional but recommended:
 
 ```bash
-npx eslint src/ --debug
+npm install --save-dev husky
+npx husky init
 ```
 
-### Prettier Conflicts with ESLint
+Then configure `.husky/pre-commit`:
 
-Install both compatible:
-
-```bash
-npm install --save-dev eslint-config-prettier
+```sh
+npm run lint
+npm run format:check
 ```
 
-Update `.eslintrc.json`:
-
-```json
-{
-  "extends": ["eslint:recommended", "prettier"]
-}
-```
-
-### Git Hook Not Running
-
-Ensure Husky is installed:
-
-```bash
-npx husky install
-```
-
-## Next Steps
-
-With linting configured, you're ready to start building your bot with confidence. Check out [core concepts](../core-concepts/client) to learn more.
+This prevents broken quality checks from entering the repository.

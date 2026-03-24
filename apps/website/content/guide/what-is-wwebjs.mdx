@@ -1,48 +1,60 @@
 ---
 title: What is WWebJS?
-description: Understanding whatsapp-web.js and its capabilities
-icon: MessageCircleQuestionMark
 ---
 
-WWebJS (also known as `whatsapp-web.js`) is a powerful Node.js library that allows developers to interact with WhatsApp Web directly. It enables the creation of automation tools by simulating a WhatsApp Web client and exposing its core features to your application.
+`WWebJS`, also called `whatsapp-web.js`, is a Node.js library that automates WhatsApp Web through a managed browser runtime.
 
-## Why use WWebJS?
+## How it works
 
-WWebJS is designed to be easy to use and simple to integrate into existing projects. Its high-level API abstracts the complexities of WhatsApp Web, allowing you to focus on building your applications without worrying about the underlying implementation details.
+At runtime, the flow is usually:
 
-Key advantages include:
+1. Your app starts a Puppeteer controlled browser.
+2. WhatsApp Web loads in that browser context.
+3. Internal actions are exposed through the library API.
+4. Events are emitted to your Node.js handlers.
+5. Your logic reacts to those events.
 
-- No official API key or business account required
-- Full WhatsApp Web feature access
-- Simple, intuitive Node.js API
-- Support for all message types and media
-- Easy integration with existing projects
-- Active community support
+This model is powerful, but operationally sensitive because browser and web client changes can affect behavior.
 
-## How it Works
+## Common use cases
 
-WWebJS operates by leveraging the WhatsApp Web interface, the web-based version of WhatsApp that runs in a browser. The library works by:
+1. Support assistants and workflow apps.
+2. Alerting and notification pipelines.
+3. Internal operational automation.
+4. Integrations with CRM, ERP, or ticketing systems.
+5. Media ingestion and forwarding workflows.
 
-1. Launching WhatsApp Web inside a managed Puppeteer session using a headless browser
-2. Mirroring user interactions programmatically
-3. Calling internal WhatsApp Web functions directly through the page context
-4. Handling session management and authentication automatically
+These points do not make the library unusable. They mean your engineering and governance must be clear.
 
-This approach gives you programmatic access to nearly all features available on WhatsApp Web, making it powerful for automation and integration.
+## When it is a strong fit
 
-## What Can You Build?
+It is a strong fit when you can:
 
-With WWebJS, you can create:
+1. Iterate quickly.
+2. Own your operations.
+3. Define clear boundaries for data and usage.
 
-- WhatsApp chatbots for customer support
-- Message automation and scheduling
-- Delivery notification systems
-- Alert and reminder services
-- Contact management tools
-- Media archiving and processing
-- Emergency communication systems
-- Integration bridges with other platforms
+## When official APIs are better
 
-## Official API Alternative
+If strict compliance, contractual support, or very large scale commercial traffic is required, evaluate official offerings early.
 
-Meta provides an official WhatsApp Business API through the Facebook Developer platform. For critical business applications, consider using the [official API](https://developers.facebook.com/docs/whatsapp/) or managed services like [Twilio](https://www.twilio.com/en-us/messaging/channels/whatsapp).
+1. [WhatsApp Official API](https://developers.facebook.com/docs/whatsapp/)
+2. [Twilio WhatsApp](https://www.twilio.com/en-us/messaging/channels/whatsapp)
+
+## Comparison with Baileys and WhatsMeow
+
+Developers often compare three unofficial stacks:
+
+1. `whatsapp-web.js`, a browser driven Node.js integration.
+2. `Baileys` (WhiskeySockets), a Node.js WebSocket implementation.
+3. `WhatsMeow`, a Go based WebSocket implementation.
+
+| Feature                      | whatsapp-web.js                  | Baileys (WhiskeySockets)  | WhatsMeow                 |
+| ---------------------------- | -------------------------------- | ------------------------- | ------------------------- |
+| Runtime model                | Browser (Puppeteer)              | Protocol (WebSocket)      | Protocol (WebSocket)      |
+| Primary ecosystem            | Node.js                          | Node.js                   | Go                        |
+| API abstraction              | High level                       | Medium level              | Medium level              |
+| Onboarding speed             | Fast                             | Medium                    | Medium                    |
+| Runtime overhead             | Higher                           | Lower                     | Lower                     |
+| Resource usage (CPU and RAM) | Higher, browser process included | Lower, no browser process | Lower, no browser process |
+| Browser dependency           | Yes                              | No                        | No                        |

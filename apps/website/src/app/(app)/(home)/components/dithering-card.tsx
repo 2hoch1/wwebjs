@@ -31,7 +31,7 @@ function DitheringCardInner() {
       {isVisible && (
         <Dithering
           colorBack={resolvedTheme === 'dark' ? '#0a0a0a' : '#fafafa'}
-          colorFront={resolvedTheme === 'dark' ? '#4ACC65' : '#5CFF7A'}
+          colorFront={resolvedTheme === 'dark' ? '#e8e8e8' : '#1a1a1a'}
           shape="warp"
           type="4x4"
           speed={0.15}

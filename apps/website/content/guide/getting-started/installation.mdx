@@ -1,99 +1,170 @@
 ---
 title: Installation
-description: Step-by-step installation guide for WWebJS
 ---
 
-## Prerequisites
+import { Step, Steps } from 'fumadocs-ui/components/steps'
 
-Make sure you have [Node.js](https://nodejs.org/) version 16.0 or higher installed on your system.
+<Callout title="Tip" type="info">
+  Complete setup once on your local machine first, then move to Docker or cloud.
+</Callout>
 
-Verify your installation:
+## Setup steps
 
-```bash
-node --version
-npm --version
+<Steps>
+  <Step>
+    **Verify Node and package manager**
+
+    ```bash
+    node --version
+    npm --version
+    ```
+
+    If `node` is missing or outdated, install a current LTS release first.
+
+  </Step>
+
+  <Step>
+    **Initialize project**
+
+    ```bash
+    mkdir my-whatsapp-app
+    cd my-whatsapp-app
+    npm init -y
+    ```
+
+  </Step>
+
+  <Step>
+    **Install dependencies**
+
+    Install the core library:
+
+    ```bash
+    npm install whatsapp-web.js
+    ```
+
+    Install a terminal QR renderer for local development:
+
+    ```bash
+    npm install qrcode-terminal
+    ```
+
+    `puppeteer` is managed by the dependency graph. Only override browser paths in special host environments.
+
+  </Step>
+
+  <Step>
+    **Create baseline script**
+
+    Create `index.js` with this setup:
+
+    ```javascript
+    const { Client, LocalAuth } = require('whatsapp-web.js')
+    const qrcode = require('qrcode-terminal')
+
+    const client = new Client({
+      authStrategy: new LocalAuth(),
+    })
+
+    client.on('qr', qr => {
+      qrcode.generate(qr, { small: true })
+    })
+
+    client.on('authenticated', () => {
+      console.log('Authenticated')
+    })
+
+    client.on('ready', () => {
+      console.log('Ready')
+    })
+
+    client.on('message', async msg => {
+      if (msg.body === '!ping') {
+        await msg.reply('pong')
+      }
+    })
+
+    client.on('disconnected', reason => {
+      console.log('Disconnected:', reason)
+    })
+
+    client.initialize()
+    ```
+
+  </Step>
+
+  <Step>
+    **Add scripts in package.json**
+
+    ```json
+    {
+      "scripts": {
+        "start": "node index.js",
+        "dev": "node index.js"
+      }
+    }
+    ```
+
+  </Step>
+
+  <Step>
+    **First run**
+
+    ```bash
+    npm start
+    ```
+
+    On first run, scan the QR code with WhatsApp Linked Devices.
+
+  </Step>
+
+  <Step>
+    **Validation**
+
+    Confirm these checkpoints:
+
+    1. `authenticated` appears after scanning.
+    2. `ready` appears next.
+    3. Sending `!ping` returns `pong`.
+    4. Restart does not require scanning again.
+
+  </Step>
+</Steps>
+
+## Common installation issues
+
+<Callout title="Warning" type="warning">
+  If Chromium cannot start, stop and fix your runtime dependencies before adding more app logic.
+</Callout>
+
+### Node version mismatch
+
+Symptoms:
+
+1. Install errors in dependencies.
+2. Runtime errors on startup.
+
+Fix:
+
+1. Install current LTS.
+2. Remove `node_modules` and `package-lock.json`.
+3. Run `npm install` again.
+
+### Browser startup fails on servers
+
+If your host has restricted sandbox settings or no GUI, use Puppeteer args explicitly.
+
+```javascript
+const client = new Client({
+  authStrategy: new LocalAuth(),
+  puppeteer: {
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  },
+})
 ```
 
-## Create a New Project
+### QR code is not displayed
 
-If you don't have an existing Node.js project, create one:
-
-```bash
-mkdir my-whatsapp-bot
-cd my-whatsapp-bot
-npm init -y
-```
-
-## Install WWebJS
-
-Install the latest version of whatsapp-web.js from npm:
-
-```bash
-npm install whatsapp-web.js
-```
-
-You may also need to install Puppeteer separately:
-
-```bash
-npm install puppeteer
-```
-
-## Optional: Development Dependencies
-
-For development, consider installing these useful tools:
-
-```bash
-npm install --save-dev nodemon
-npm install --save-dev eslint
-npm install --save-dev prettier
-```
-
-- **nodemon**: Automatically restart your bot when files change
-- **eslint**: Find and fix code issues
-- **prettier**: Format code consistently
-
-## Verify Installation
-
-Create a simple test file to verify everything works:
-
-```bash
-cat > test.js << 'EOF'
-const { Client } = require('whatsapp-web.js');
-console.log('WWebJS installed successfully!');
-EOF
-
-node test.js
-```
-
-You should see the success message without errors.
-
-## Update your package.json
-
-Edit your `package.json` to add a start script:
-
-```json
-{
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
-  }
-}
-```
-
-## Next Steps
-
-Now that WWebJS is installed, you can:
-
-1. Learn about [Application Setup](./app-setup) to configure your first bot
-2. Explore the [Project Structure](./project-structure) for organizing your code
-3. Check out the core concepts in the documentation
-
-## Troubleshooting
-
-Having issues? Common problems and solutions:
-
-- **Puppeteer installation fails**: Make sure you have 512MB+ disk space
-- **Module not found**: Run `npm install` again in your project directory
-- **Permission errors**: Try running with `sudo` or check your Node.js installation
-
-Still stuck? Ask in the [Discord community](https://discord.gg/wyKybbF)
+1. Verify that the process is still running.
+2. Verify terminal rendering capability.
+3. Add explicit logs inside the `qr` handler.

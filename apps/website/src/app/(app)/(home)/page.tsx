@@ -2,7 +2,7 @@
 
 import { buttonVariants } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { cn } from '@/lib/cn'
+import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
 import { ExamplesTab } from './components/examples-tab'

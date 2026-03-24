@@ -13,3 +13,9 @@ export function baseOptions(): BaseLayoutProps {
     },
   }
 }
+
+export const gitConfig = {
+  user: 'wwebjs',
+  repo: 'wwebjs',
+  branch: 'main',
+}

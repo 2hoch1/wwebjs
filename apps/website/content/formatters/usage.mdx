@@ -1,0 +1,39 @@
+---
+title: Usage
+description: Learn how to use the formatter utilities in your WWebJS bot.
+---
+
+## Text Formatting
+
+WhatsApp supports a limited set of text formatting options. The formatter package exposes helpers for each:
+
+```javascript
+const { bold, italic, strikethrough, monospace, code } = require('@wwebjs/formatter')
+
+bold('text')          // *text*
+italic('text')        // _text_
+strikethrough('text') // ~text~
+monospace('text')     // ```text```
+code('text')          // `text`
+```
+
+## Combining Formatters
+
+Formatters can be composed together:
+
+```javascript
+const { bold, italic } = require('@wwebjs/formatter')
+
+const msg = bold(italic('Important notice'))
+// *_Important notice_*
+```
+
+## Lists
+
+Build formatted lists:
+
+```javascript
+const { list } = require('@wwebjs/formatter')
+
+const msg = list(['First item', 'Second item', 'Third item'])
+```

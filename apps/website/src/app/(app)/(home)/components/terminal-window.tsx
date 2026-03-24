@@ -71,7 +71,7 @@ function DownloadSpan({ className }: { className?: string }) {
     const secs = (elapsed / 1000).toFixed(1)
     return (
       <div className={cn('font-mono text-sm', className)}>
-        <span style={{ color: '#4ACC65' }}>✓</span>
+        <span className="text-primary">✓</span>
         <span className="text-foreground/60"> installed {count} packages </span>
         <span className="text-foreground/30">in {secs}s</span>
       </div>
@@ -80,7 +80,7 @@ function DownloadSpan({ className }: { className?: string }) {
 
   return (
     <div className={cn('font-mono text-sm', className)}>
-      <span style={{ color: '#4ACC65' }}>{SPINNER_FRAMES[frame]}</span>
+      <span className="text-primary">{SPINNER_FRAMES[frame]}</span>
       <span className="text-foreground/60"> installing packages </span>
       <span className="text-foreground/30">({count}/182)</span>
     </div>
@@ -95,7 +95,7 @@ export function TerminalWindow() {
           <span>~/my-bot</span>
         </AnimatedSpan>
 
-        <TypingAnimation style={{ color: '#4ACC65' }} duration={55}>
+        <TypingAnimation className="text-primary" duration={55}>
           {'$ npm i whatsapp-web.js'}
         </TypingAnimation>
 
@@ -109,7 +109,7 @@ export function TerminalWindow() {
           <span>~/my-bot</span>
         </AnimatedSpan>
 
-        <TypingAnimation style={{ color: '#4ACC65' }} duration={60}>
+        <TypingAnimation className="text-primary" duration={60}>
           {'$ npm start'}
         </TypingAnimation>
 
@@ -121,7 +121,7 @@ export function TerminalWindow() {
           <span>{'>'} node bot.js</span>
         </AnimatedSpan>
 
-        <AnimatedSpan style={{ color: '#4ACC65' }} className="font-medium">
+        <AnimatedSpan className="text-primary font-medium">
           <span>Client is ready!</span>
         </AnimatedSpan>
       </Terminal>
