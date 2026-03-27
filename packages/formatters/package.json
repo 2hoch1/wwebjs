@@ -1,7 +1,7 @@
 {
   "$schema": "https://www.schemastore.org/package.json",
   "name": "@wwebjs/formatters",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A collection of utility functions for formatting WhatsApp messages.",
   "keywords": [
     "whatsapp",
